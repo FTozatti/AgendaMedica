@@ -20,6 +20,14 @@ CREATE TABLE usuario(
 CREATE TABLE medico(
     usercod INT NOT NULL,
     crm VARCHAR(30) UNIQUE,
-    especialidade VARCHAR(255)
+    especialidade VARCHAR(255),
+    CONSTRAINT fk_medico FOREIGN KEY (usercod) REFERENCES usuario (codigo)
+);
+
+CREATE TABLE sercretaria(
+    usercode INT NOT NULL,
+    medcode INT NOT NULL,
+    CONSTRAINT fk_secuser FOREIGN KEY (usercode) REFERENCES usuario (codigo),
+    CONSTRAINT fk_secmed FOREIGN KEY (medcode) REFERENCES medico (usercod)
 );
 
