@@ -31,3 +31,5 @@ CREATE TABLE sercretaria(
     CONSTRAINT fk_secmed FOREIGN KEY (medcode) REFERENCES medico (usercod)
 );
 
+CREATE USER 'sistema'@'localhost' IDENTIFIED BY 'Dfffgl#2021';
+GRANT ALL PRIVILEGES ON * . * TO 'sistema'@'localhost';

@@ -2,7 +2,7 @@ package main
 
 import (
 	"strconv"
-
+	"Back/conexao"
 	"github.com/gin-gonic/gin"
 )
 
@@ -104,4 +104,7 @@ func main() {
 	})
 
 	r.Run(":3001")
+
+	f=:Connect()
+	fmt.Println("%s",f)
 }
