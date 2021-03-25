@@ -1,8 +1,9 @@
 package main
 
 import (
+	"conexao"
 	"strconv"
-	"Back/conexao"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,6 +22,18 @@ func main() {
 
 	r.GET("/movies", func(c *gin.Context) {
 		c.JSON(200, movies)
+	})
+
+	r.GET("/teste", func(c *gin.Context) {
+		f := conexao.Connect()
+		if f != nil {
+			c.JSON(400, gin.H{"message": "Conectado com sucesso"})
+			return
+		} else {
+			c.JSON(400, gin.H{"message": "Conectado com falha"})
+			return
+		}
+
 	})
 
 	r.GET("/movies/:id", func(c *gin.Context) {
@@ -105,6 +118,4 @@ func main() {
 
 	r.Run(":3001")
 
-	f=:Connect()
-	fmt.Println("%s",f)
 }
