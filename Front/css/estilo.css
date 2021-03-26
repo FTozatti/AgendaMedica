@@ -1,0 +1,119 @@
+*{
+    margin: 0;
+    padding: 0;
+  }
+  
+  body{
+    font-size: 15px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    background: #ffffff;
+  }
+
+  .carousel img {
+    height:400px !important;
+    min-height: 400px !important;
+  }
+
+  nav{
+    background: #fff;
+    height: 50px;
+  }
+  
+  .area{
+    font: normal 20px Calibri;
+    width: auto;
+    margin: auto;
+  }
+
+  .preto{
+    color: #000000;
+    border-top: 200px;
+  }
+
+  .logo{
+    float: left;
+    margin-top: 10px;
+    margin-left: 55px;
+    width: 90;
+    height: 60;
+    font-size: 25px;
+  }
+  
+  .logo2{
+    float: left;
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 0;
+    height: 10;
+    font-size: 15px;
+  }
+  
+  .menuu{
+    float: right;
+    padding-right: 20px;
+    margin-top: 13px;
+  }
+
+  a{
+    text-decoration:none;
+    font-weight: bold;
+  }
+
+  #areapri{
+    background: #ffffff;
+    height: 500px;
+    margin-top: 5px;
+  }
+  
+  .pgini{
+    padding-top: 20px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+  }
+  
+  .banner{
+    background-repeat:repeat;
+    margin: auto;
+  }
+
+  .container {
+    position: relative;
+    width: auto;
+    height: auto;
+    background: #ffffff;
+    border-radius: 20px;
+  }
+  
+  .container .list-image{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .container .list-image li {
+  margin-top: 0px;
+  margin-left: 20px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  list-style:none;
+  
+  }
+  
+  .container .list-image li .container_imagem{
+    margin-top: 100px;
+    position:relative;
+    width: 250px;
+    height: 300px;
+  }
+  
+  .container .list-image li .container_imagem .information_image{
+    align-items: center;
+    position: relative;
+  }
+  
+  .container .list-image li .container_imagem .information_image .name_image{
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+
+  }
