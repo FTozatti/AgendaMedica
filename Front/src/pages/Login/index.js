@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import './login.css'
 
+import {
+   BrowserRouter as Router,
+   Switch,
+   Route,
+   Link
+ } from "react-router-dom";
+
 import { MdEmail, MdLock } from "react-icons/md"
 import { HiEye, HiEyeOff } from "react-icons/hi"
 
@@ -60,7 +67,7 @@ function Login() {
             </div>
 
             <button type="submit">
-               Entrar
+               <Link to="Home" style={{ textDecoration: 'none', color: 'white' }}>Entrar </Link>
             </button>
 
             <h4>Não tem conta?</h4>
