@@ -1,7 +1,7 @@
 package main
 
 import (
-	"conexao"
+	"agendamedica/conexao"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
