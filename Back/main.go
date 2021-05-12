@@ -1,62 +1,119 @@
 package main
 
 import (
-	"agendamedica/conexao"
-	"net/http"
+	"conexao"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
-type User struct {
-	Id       int    `json:"id"`
-	Nome     string `json:"nome"`
-	Cidade   string `json:"cidade"`
-	Datanasc string `json:"datanasc"`
-	Email    string `json:"email"`
-	Senha    string `json:"senha"`
+type Movie struct {
+	ID           int    `json:"id"`
+	Title        string `json:"title"`
+	Genre        string `json:"genre"`
+	ReleasedDate int    `json:"year"`
 }
 
 func main() {
 	r := gin.Default()
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{"data": "Hello world"})
-	})
+	var movies []Movie
+	lastID := 1
 
-	r.GET("/usuarios", func(c *gin.Context) {
-		db := conexao.Connect()
-		defer db.Close()
-
-		registros, err := db.Query("SELECT nome, cidade, datanasc, email, senha FROM usuario")
-		if err != nil {
-			c.JSON(400, gin.H{"message": "Erro"})
-			return
-		}
-		defer registros.Close()
-		var usuario []User
-		for registros.Next() {
-			var u User
-			err := registros.Scan(&u.Nome, &u.Cidade, &u.Datanasc, &u.Email, &u.Senha)
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, err.Error())
-				return
-			}
-			usuario = append(usuario, u)
-		}
-
-		c.JSON(200, gin.H{"data": usuario})
+	r.GET("/movies", func(c *gin.Context) {
+		c.JSON(200, movies)
 	})
 
 	r.GET("/teste", func(c *gin.Context) {
 		f := conexao.Connect()
 		if f != nil {
-			c.JSON(200, gin.H{"message": "Conectado com sucesso"})
+			c.JSON(400, gin.H{"message": "Conectado com sucesso"})
 			return
 		} else {
 			c.JSON(400, gin.H{"message": "Conectado com falha"})
 			return
 		}
 
+	})
+
+	r.GET("/movies/:id", func(c *gin.Context) {
+		idStr := c.Param("id")
+		idInt, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O id enviado é inválido: " + idStr})
+			return
+		}
+
+		for _, movie := range movies {
+			if movie.ID == idInt {
+				c.JSON(200, movie)
+				return
+			}
+		}
+
+		c.JSON(204, nil)
+	})
+
+	r.POST("/movies", func(c *gin.Context) {
+		var m Movie
+
+		err := c.ShouldBind(&m)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O Json(payload) veio com erro: " + err.Error()})
+			return
+		}
+
+		m.ID = lastID
+		lastID++
+		movies = append(movies, m)
+
+		c.JSON(201, gin.H{"message": "Filme criado com sucesso"})
+	})
+
+	r.PUT("/movies/:id", func(c *gin.Context) {
+		var m Movie
+		err := c.ShouldBind(&m)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O Json(payload) veio com erro: " + err.Error()})
+			return
+		}
+
+		idStr := c.Param("id")
+		idInt, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O id enviado é inválido: " + idStr})
+			return
+		}
+
+		m.ID = idInt
+		for i := range movies {
+			if movies[i].ID == idInt {
+				movies[i] = m
+				c.JSON(200, gin.H{"message": "Alteração realizada com sucesso"})
+				return
+			}
+		}
+
+		c.JSON(200, gin.H{"message": "Não encontrei o filme para alterar com id: " + idStr})
+	})
+
+	r.DELETE("/movies/:id", func(c *gin.Context) {
+		idStr := c.Param("id")
+		idInt, err := strconv.Atoi(idStr)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O id enviado é inválido: " + idStr})
+			return
+		}
+
+		for i := range movies {
+			if movies[i].ID == idInt {
+				movies = append(movies[:i], movies[i+1:]...)
+				c.JSON(200, gin.H{"message": "Remoção realizada com sucesso"})
+				return
+			}
+		}
+
+		c.JSON(200, gin.H{"message": "Não encontrei o filme para remover com id: " + idStr})
 	})
 
 	r.Run(":3001")
