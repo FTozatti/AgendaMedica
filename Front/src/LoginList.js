@@ -9,8 +9,9 @@ export default class LoginList extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3001/login?emailUser=gabiteste@gmail.com&senhaUser=teste1234`)
+    axios.get(`https://api.github.com/users/GabrielaPozetti`)
       .then(res => {
+        console.log(res.data)
         const email = res.data;
         const password = res.data;
         this.setState({ email });
