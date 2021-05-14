@@ -63,7 +63,7 @@
     background: transparent;
     width: 100%;
     outline-width: 0;
-    color: white;
+    color: gray;
     border: none;
     font-size: 17px;
     margin-left: 10px;
@@ -92,7 +92,7 @@
     background: transparent;
     width: 100%;
     outline-width: 0;
-    color:  #E1E1E6;
+    color:  gray;
     border: none;
     font-size: 17px;
     margin-left: 12px;
