@@ -3,7 +3,8 @@ package main
 import (
 	"agendamedica/conexao"
 	"strconv"
-
+	"encoding/json"
+    "fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,6 +13,20 @@ type Movie struct {
 	Title        string `json:"title"`
 	Genre        string `json:"genre"`
 	ReleasedDate int    `json:"year"`
+}
+
+type Usuario struct {
+    Codigo      int    `json:"codigo"`
+	Nome        string `json:"nome"`
+	Datanasc    string `json:"datanasc"`
+	Cpf 		string `json:"cpf"`
+	Telefone    string `json:"telefone"`
+	Email       string `json:"email"`
+	Endereco    string `json:"endereco"`
+	Bairro 		string `json:"bairro"`
+	Cidade      string `json:"cidade"`
+	Cep         string `json:"cep"`
+	Senha       string `json:"senha"`
 }
 
 func main() {
@@ -34,6 +49,49 @@ func main() {
 			return
 		}
 
+	})
+
+	r.POST("/usuarios", func(c *gin.Context) {
+		db := conexao.Connect()
+		var usuario Usuario
+		stmt, err := db.Prepare(`INSERT INTO usuario
+					 (codigo, nome, datanasc, cpf, telefone, email, endereco, bairro, cidade, cep, senha)
+					 Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O Json(payload) veio com erro: " + err.Error()})
+			return
+		}
+		defer stmt.Close()
+
+		jsonData := []byte(`
+		{
+			"codigo" : 999, 
+			"nome" : "joao", 
+			"datanasc" : "1999/02/01", 
+			"cpf" : "111.222.555-22", 
+			"telefone" : "1396969696", 
+			"email" : "j@j.com", 
+			"endereco": "Rua dos Alfeneiros", 
+			"bairro": "Centro", 
+			"cidade": "Londres", 
+			"cep": "12502-302", 
+			"senha": "********"
+		}`)
+		
+		u := json.Unmarshal(jsonData, &usuario)
+
+		if u != nil {
+			fmt.Println(u)
+		}
+
+		_, err = stmt.Exec(usuario.Codigo, usuario.Nome, usuario.Datanasc , usuario.Cpf , usuario.Telefone, usuario.Email, usuario.Endereco, usuario.Bairro, usuario.Cidade, usuario.Cep, usuario.Senha)
+
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O Json(payload) veio com erro: " + err.Error()})
+			return
+		}
+
+		c.JSON(200, gin.H{"message": "Inserção realizada com sucesso"})
 	})
 
 	r.GET("/movies/:id", func(c *gin.Context) {
