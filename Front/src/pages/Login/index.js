@@ -3,6 +3,7 @@ import './login.css'
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
+
 import {
    BrowserRouter as Router,
    Switch,
@@ -20,20 +21,25 @@ function Login() {
    const [password, setPassword] = useState("")
    const [show, setShow] = useState(false)
    
-   const handleClick = (e) => {
-      e.preventDefault()
-      setShow(!show);
+   handleSubmit = event => {
+      event.preventDefault();
+  
+      const user = {
+        email: this.state.email,
+        password: this.state.password
+      };
    }
    
    function goHome(){
       console.log("Entrou")
-      axios.get(`http://localhost:3001/login?emailUser=gabiteste@gmail.com&senhaUser=teste1234`)
+      axios.post(`http://localhost:3001/login?emailUser=gabiteste@gmail.com&senhaUser=teste1234`)
       .then(res => {
          if (res.data != null){
             history.push('Home')
          }
          else{
             console.log("Não válido")
+            
          }
       })
       
@@ -73,18 +79,18 @@ function Login() {
       {show ? (
          <HiEye
          size={20}
-         onClick={handleClick}
+         onSubmit={handleClick}
          />
          ) : (
             <HiEyeOff
             size={20}
-            onClick={handleClick}
+            onSubmit={handleClick}
             />
             )}
             </div>
             </div>
             
-            <button type="submit" onClick={goHome}>Entrar
+            <button type="submit" onSubmit={goHome}>Entrar
             {/* <Link to="Home" style={{ textDecoration: 'none', color: 'white' }}>Entrar </Link> */}
             </button>
             
