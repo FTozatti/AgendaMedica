@@ -31,5 +31,15 @@ CREATE TABLE sercretaria(
     CONSTRAINT fk_secmed FOREIGN KEY (medcode) REFERENCES medico (usercod)
 );
 
+CREATE TABLE consulta(
+    idCons   INT AUTO_INCREMENT,
+    usercode INT NOT NULL,
+    medcode  INT NOT NULL,
+    dataCons DATE NOT NULL,
+    CONSTRAINT pk_consid PRIMARY KEY  (idCons),
+    CONSTRAINT fk_consuser FOREIGN KEY (usercode) REFERENCES usuario (codigo),
+    CONSTRAINT fk_consmed FOREIGN KEY (medcode) REFERENCES medico (usercod)
+);
+
 CREATE USER 'sistema'@'localhost' IDENTIFIED BY 'Dfffgl#2021';
 GRANT ALL PRIVILEGES ON * . * TO 'sistema'@'localhost';
