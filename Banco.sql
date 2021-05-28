@@ -32,9 +32,9 @@ CREATE TABLE sercretaria(
 );
 
 CREATE TABLE consulta(
-    idCons INT AUTO_INCREMENT,
+    idCons   INT AUTO_INCREMENT,
     usercode INT NOT NULL,
-    medcode INT NOT NULL,
+    medcode  INT NOT NULL,
     dataCons DATE NOT NULL,
     CONSTRAINT pk_consid PRIMARY KEY  (idCons),
     CONSTRAINT fk_consuser FOREIGN KEY (usercode) REFERENCES usuario (codigo),
