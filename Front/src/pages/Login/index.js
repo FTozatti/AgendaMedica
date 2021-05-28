@@ -4,13 +4,6 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
 
-import {
-   BrowserRouter as Router,
-   Switch,
-   Route,
-   Link
-} from "react-router-dom";
-
 import { MdEmail, MdLock } from "react-icons/md"
 import { HiEye, HiEyeOff } from "react-icons/hi"
 
@@ -21,30 +14,43 @@ function Login() {
    const [password, setPassword] = useState("")
    const [show, setShow] = useState(false)
    
-   handleSubmit = event => {
-      event.preventDefault();
-  
-      const user = {
-        email: this.state.email,
-        password: this.state.password
-      };
+   const handleClick = (e) => {
+      e.preventDefault()
+      setShow(!show);
    }
    
+   /*
    function goHome(){
       console.log("Entrou")
-      axios.post(`http://localhost:3001/login?emailUser=gabiteste@gmail.com&senhaUser=teste1234`)
+      axios.get(`http://localhost:3001/login?emailUser=gabiteste@gmail.com&senhaUser=teste1234`)
       .then(res => {
          if (res.data != null){
             history.push('Home')
          }
          else{
             console.log("Não válido")
-            
          }
       })
-      
-   }
    
+   }
+   */
+
+   function goHome(){
+      console.log("Entrou")
+      console.log(email)
+      console.log(password)
+      axios.post(`http://localhost:3001/login`, {emailUser: "gabiteste@gmail.com", senhaUser: "teste12345"})
+      .then(res => {
+         if (res.data != null){
+            history.push('Home')
+         }
+         else{
+            console.log("Não válido")
+         }
+      })
+   
+   }
+
    return (
       <div className="login">
       <div className="login-logo">
@@ -79,18 +85,18 @@ function Login() {
       {show ? (
          <HiEye
          size={20}
-         onSubmit={handleClick}
+         onClick={handleClick}
          />
          ) : (
             <HiEyeOff
             size={20}
-            onSubmit={handleClick}
+            onClick={handleClick}
             />
             )}
             </div>
             </div>
             
-            <button type="submit" onSubmit={goHome}>Entrar
+            <button type="submit" onClick={goHome}>Entrar
             {/* <Link to="Home" style={{ textDecoration: 'none', color: 'white' }}>Entrar </Link> */}
             </button>
             
