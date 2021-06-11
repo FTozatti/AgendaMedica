@@ -16,7 +16,6 @@ type User struct {
 }
 
 type Usuario struct {
-	Codigo   int    `json:"codigo"`
 	Nome     string `json:"nome"`
 	Datanasc string `json:"datanasc"`
 	Cpf      string `json:"cpf"`
@@ -84,7 +83,6 @@ func main() {
 	})
 
 	var usuarios []Usuario
-	lastID := 1
 	r.POST("/usuarios", func(c *gin.Context) {
 		db := conexao.Connect()
 
@@ -97,8 +95,8 @@ func main() {
 		}
 
 		stmt, err := db.Prepare(`INSERT INTO usuario
-					 (codigo, nome, datanasc, cpf, telefone, email, endereco, bairro, cidade, cep, senha)
-					 Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+					 (nome, datanasc, cpf, telefone, email, endereco, bairro, cidade, cep, senha)
+					 Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
 
 		if err != nil {
 			c.JSON(400, gin.H{"message": "O Json veio com erro: " + err.Error()})
@@ -106,12 +104,9 @@ func main() {
 		}
 		defer stmt.Close()
 
-		u.Codigo = lastID
-		lastID++
-
 		usuarios = append(usuarios, u)
 
-		_, err = stmt.Exec(u.Codigo, u.Nome, u.Datanasc, u.Cpf, u.Telefone, u.Email, u.Endereco, u.Bairro, u.Cidade, u.Cep, u.Senha)
+		_, err = stmt.Exec(u.Nome, u.Datanasc, u.Cpf, u.Telefone, u.Email, u.Endereco, u.Bairro, u.Cidade, u.Cep, u.Senha)
 
 		if err != nil {
 			c.JSON(400, gin.H{"message": "O Json veio com erro: " + err.Error()})
@@ -120,7 +115,7 @@ func main() {
 
 		c.JSON(200, gin.H{"message": "Inserção realizada com sucesso"})
 	})
-
+	
 	r.POST("/consulta", func(c *gin.Context) {
 		db := conexao.Connect()
 		defer db.Close()
@@ -183,6 +178,54 @@ func main() {
 		c.JSON(200, gin.H{"message": "Ok"})
 	})
 
-	r.Run(":3001")
+	r.PUT("/alterar/usuario/:codigo", func(c *gin.Context)  {
+		db := conexao.Connect()
 
+		var u Usuario
+
+		err := c.ShouldBind(&u)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O Json(payload) veio com erro: " + err.Error()})
+			return
+		}
+		stmt, err := db.Prepare(`Update usuario
+					 Set nome=?, datanasc=?, cpf=?, telefone=?, email=?, endereco=?, bairro=?, cidade=?, cep=?, senha=?
+					 Where codigo=?`)
+		if err != nil {
+			c.JSON(500, gin.H{"message": err.Error()})
+			return
+		}
+		defer stmt.Close()
+		usuarios = append(usuarios, u)
+
+		_, err = stmt.Exec(u.Nome, u.Datanasc, u.Cpf, u.Telefone, u.Email, u.Endereco, u.Bairro, u.Cidade, u.Cep, u.Senha, c.Param("codigo"))
+
+		if err != nil {
+			c.JSON(500, gin.H{"message": err.Error()})
+			return
+		}
+		c.JSON(200, gin.H{"message": "Alteração realizada com sucesso"})
+	})
+	
+	r.DELETE("/excluir/consulta/:idCons", func(c *gin.Context) {
+		db := conexao.Connect()
+		defer db.Close()
+
+		stmt, err := db.Prepare(`Delete From consulta
+					 Where idCons = ?`)
+		if err != nil {
+			c.JSON(500, gin.H{"message": err.Error()})
+			return
+		}
+		defer stmt.Close()
+		_, err = stmt.Exec(c.Param("idCons"))
+		if err != nil {
+			c.JSON(500, gin.H{"message": err.Error()})
+			return
+		}
+
+		c.JSON(200, gin.H{"message": "Deletado com sucesso"})
+	})
+
+	r.Run(":3001")
 }
