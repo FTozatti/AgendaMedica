@@ -163,6 +163,26 @@ func main() {
 		c.JSON(200, gin.H{"message": "Inserção realizada com sucesso"})
 	})
 
+	r.GET("/login", func(c *gin.Context) {
+		db := conexao.Connect()
+		defer db.Close()
+
+		emailUser := c.Query("emailUser")
+		senhaUser := c.Query("senhaUser")
+
+		registros, err := db.Query("SELECT email, senha FROM usuario WHERE email ='" + emailUser + "' and senha = '" + senhaUser + "'")
+		if err != nil {
+			c.JSON(400, gin.H{"message": "Erro"})
+			return
+		}
+		defer registros.Close()
+		if !registros.Next() {
+			c.JSON(403, gin.H{"message": "Forbidden"})
+			return
+		}
+		c.JSON(200, gin.H{"message": "Ok"})
+	})
+
 	r.Run(":3001")
 
 }
