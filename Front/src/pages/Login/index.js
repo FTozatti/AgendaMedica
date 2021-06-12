@@ -19,10 +19,10 @@ function Login() {
       setShow(!show);
    }
    
-   /*
+
    function goHome(){
       console.log("Entrou")
-      axios.get(`http://localhost:3001/login?emailUser=gabiteste@gmail.com&senhaUser=teste1234`)
+      axios.get(`http://localhost:3001/login?emailUser=${email}&senhaUser=${password}`)
       .then(res => {
          if (res.data != null){
             history.push('Home')
@@ -33,8 +33,7 @@ function Login() {
       })
    
    }
-   */
-
+/*
    function goHome(){
       console.log("Entrou")
       console.log(email)
@@ -50,7 +49,7 @@ function Login() {
       })
    
    }
-
+*/
    function goUser(){
       history.push('/cadastrousuario')
    }

@@ -115,47 +115,51 @@ func main() {
 
 		c.JSON(200, gin.H{"message": "Inserção realizada com sucesso"})
 	})
-	
-	r.POST("/consulta", func(c *gin.Context) {
+
+	r.POST("/consulta", func(d *gin.Context) {
 		db := conexao.Connect()
 		defer db.Close()
 
-		registros, err := db.Query("SELECT usercode, medcode, datacons FROM consulta where datacons = ? and medcode = ?", c.Param("datacons"), c.Param("medcode"))
+		var cons Consulta
 
-		println("SELECT idcons, usercode, medcode, datacons FROM consulta where datacons = ? and medcode = ?", c.Param("datacons"), c.Param("medcode"))
+		cons.Usercode = d.GetInt("usercode")
+		cons.Medcode = d.GetInt("medcode")
+		cons.Datacons = d.GetString("datacons")
+
+		registros, err := db.Query("SELECT usercode, medcode, datacons FROM consulta where datacons = ? and medcode = ?", cons.Datacons, cons.Medcode)
+
+		//println("SELECT idcons, usercode, medcode, datacons FROM consulta where datacons = ? and medcode = ?", cons.Datacons, cons.Medcode)
 
 		if err != nil {
-			c.JSON(500, gin.H{"message": err.Error()})
+			d.JSON(500, gin.H{"message": err.Error()})
 
 			return
 		}
 		defer registros.Close()
 
 		var consul []Consulta
-		err = c.ShouldBind(&consul)
+		err = d.ShouldBind(&consul)
 
 		if registros == nil {
-			c.JSON(400, gin.H{"message": "DATA Ocupada"})
+			d.JSON(400, gin.H{"message": "DATA Ocupada"})
 			return
 		}
-		stmt, err := db.Prepare(`INSERT INTO consulta
-					 (usercode, medcode, datacons)
-					 VALUES (?, ?, ?)`)
+		stmt, err := db.Prepare("INSERT INTO consulta (usercode, medcode, datacons) VALUES (?, ?, ?)")
 
 		if err != nil {
-			c.JSON(400, gin.H{"message": "O Json veio com erro1: " + err.Error()})
+			d.JSON(400, gin.H{"message": "O Json veio com erro1: " + err.Error()})
 			return
 		}
 		defer stmt.Close()
 
-		_, err = stmt.Exec(c.Param("usercode"), c.Param("medcode"), c.Param("datacons"))
+		_, err = stmt.Exec(cons.Usercode, cons.Medcode, cons.Datacons)
 
 		if err != nil {
-			c.JSON(400, gin.H{"message": "O Json veio com erro2: " + err.Error()})
+			d.JSON(400, gin.H{"message": "O Json veio com erro2: " + err.Error()})
 			return
 		}
 
-		c.JSON(200, gin.H{"message": "Inserção realizada com sucesso"})
+		d.JSON(200, gin.H{"message": "Inserção realizada com sucesso"})
 	})
 
 	r.GET("/login", func(c *gin.Context) {
@@ -178,7 +182,7 @@ func main() {
 		c.JSON(200, gin.H{"message": "Ok"})
 	})
 
-	r.PUT("/alterar/usuario/:codigo", func(c *gin.Context)  {
+	r.PUT("/alterar/usuario/:codigo", func(c *gin.Context) {
 		db := conexao.Connect()
 
 		var u Usuario
@@ -206,7 +210,7 @@ func main() {
 		}
 		c.JSON(200, gin.H{"message": "Alteração realizada com sucesso"})
 	})
-	
+
 	r.DELETE("/excluir/consulta/:idCons", func(c *gin.Context) {
 		db := conexao.Connect()
 		defer db.Close()
