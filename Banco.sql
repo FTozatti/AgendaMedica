@@ -26,7 +26,7 @@ CREATE TABLE medico(
 
 CREATE TABLE sercretaria(
     usercode INT NOT NULL,
-    medcode INT NOT NULL,
+  
     CONSTRAINT fk_secuser FOREIGN KEY (usercode) REFERENCES usuario (codigo),
     CONSTRAINT fk_secmed FOREIGN KEY (medcode) REFERENCES medico (usercod)
 );
@@ -35,7 +35,7 @@ CREATE TABLE consulta(
     idCons   INT AUTO_INCREMENT,
     usercode INT NOT NULL,
     medcode  INT NOT NULL,
-    dataCons DATE NOT NULL,
+    dataCons DATETIME NOT NULL,
     CONSTRAINT pk_consid PRIMARY KEY  (idCons),
     CONSTRAINT fk_consuser FOREIGN KEY (usercode) REFERENCES usuario (codigo),
     CONSTRAINT fk_consmed FOREIGN KEY (medcode) REFERENCES medico (usercod)
