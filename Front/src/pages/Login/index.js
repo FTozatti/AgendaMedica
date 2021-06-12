@@ -42,13 +42,17 @@ function Login() {
       axios.post(`http://localhost:3001/login`, {emailUser: "gabiteste@gmail.com", senhaUser: "teste12345"})
       .then(res => {
          if (res.data != null){
-            history.push('Home')
+            history.push('/home')
          }
          else{
             console.log("Não válido")
          }
       })
    
+   }
+
+   function goUser(){
+      history.push('/cadastrousuario')
    }
 
    return (
@@ -102,7 +106,7 @@ function Login() {
             
             <h4>Não tem conta?</h4>
             
-            <button type="submit">
+            <button type="submit" onClick={goUser}>
             Cadastrar
             </button>
             </div>
