@@ -12,7 +12,7 @@ function Home() {
                <h3 class="logo"><span class="preto">Agenda Médica</span></h3>
             </a>
             <div class="menuu">
-               <a class="iazul" href="/"><i class="fas fa-sign-in-alt"></i> Login</a>
+               <a class="iazul" href="/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
             </div>
             </div>
          </nav>
