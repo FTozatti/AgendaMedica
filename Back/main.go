@@ -2,6 +2,7 @@ package main
 
 import (
 	"agendamedica/conexao"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -122,14 +123,13 @@ func main() {
 
 		var cons Consulta
 
-		cons.Usercode = d.GetInt("usercode")
-		cons.Medcode = d.GetInt("medcode")
-		cons.Datacons = d.GetString("datacons")
+		d.ShouldBind(&cons)
 
 		registros, err := db.Query("SELECT usercode, medcode, datacons FROM consulta where datacons = ? and medcode = ?", cons.Datacons, cons.Medcode)
 
 		//println("SELECT idcons, usercode, medcode, datacons FROM consulta where datacons = ? and medcode = ?", cons.Datacons, cons.Medcode)
 
+		fmt.Printf("%v", cons)
 		if err != nil {
 			d.JSON(500, gin.H{"message": err.Error()})
 
