@@ -1,7 +1,7 @@
 CREATE DATABASE AgendaMedica;
-
+USE AgendaMedica;
 CREATE TABLE usuario(
-    codigo INT PRIMARY KEY,
+    codigo INT AUTO_INCREMENT,
     nome VARCHAR(255) NOT NULL,
     datanasc DATE NOT NULL,
     cpf VARCHAR(14) UNIQUE,
@@ -14,7 +14,8 @@ CREATE TABLE usuario(
     senha VARCHAR(255),
     paciente INT DEFAULT 0,
     medico INT DEFAULT 0,
-    sercretaria INT DEFAULT 0
+    sercretaria INT DEFAULT 0,
+    CONSTRAINT pk_user PRIMARY KEY (codigo)
 );
 
 CREATE TABLE medico(
@@ -26,7 +27,7 @@ CREATE TABLE medico(
 
 CREATE TABLE sercretaria(
     usercode INT NOT NULL,
-  
+    medcode INT NOT NULL,
     CONSTRAINT fk_secuser FOREIGN KEY (usercode) REFERENCES usuario (codigo),
     CONSTRAINT fk_secmed FOREIGN KEY (medcode) REFERENCES medico (usercod)
 );
