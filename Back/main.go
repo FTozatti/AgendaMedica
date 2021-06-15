@@ -147,7 +147,7 @@ func main() {
 		stmt, err := db.Prepare("INSERT INTO consulta (usercode, medcode, datacons) VALUES (?, ?, ?)")
 
 		if err != nil {
-			d.JSON(400, gin.H{"message": "O Json veio com erro1: " + err.Error()})
+			d.JSON(400, gin.H{"message": "Erro na preparação da execução: " + err.Error()})
 			return
 		}
 		defer stmt.Close()
@@ -155,7 +155,7 @@ func main() {
 		_, err = stmt.Exec(cons.Usercode, cons.Medcode, cons.Datacons)
 
 		if err != nil {
-			d.JSON(400, gin.H{"message": "O Json veio com erro2: " + err.Error()})
+			d.JSON(400, gin.H{"message": "Erro na execução: " + err.Error()})
 			return
 		}
 
