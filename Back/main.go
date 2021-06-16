@@ -35,6 +35,22 @@ type Consulta struct {
 	Datacons string `json:"datacons"`
 }
 
+type Medico struct {
+	Id       int    `json:"id"`
+	Nome     string `json:"nome"`
+	Datanasc string `json:"datanasc"`
+	Cpf      string `json:"cpf"`
+	Telefone string `json:"telefone"`
+	Email    string `json:"email"`
+	Endereco string `json:"endereco"`
+	Bairro   string `json:"bairro"`
+	Cidade   string `json:"cidade"`
+	Cep      string `json:"cep"`
+	Senha    string `json:"senha"`
+	CRM      string `json:"crm"`
+	Especial string `json:"especial"`
+}
+
 func main() {
 	r := gin.Default()
 
@@ -229,6 +245,76 @@ func main() {
 		}
 
 		c.JSON(200, gin.H{"message": "Deletado com sucesso"})
+	})
+
+	var medico []Medico
+	r.POST("/medico", func(c *gin.Context) {
+		db := conexao.Connect()
+
+		var m Medico
+
+		err := c.ShouldBind(&m)
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O Json(payload) veio com erro: " + err.Error()})
+			return
+		}
+
+		stmt, err := db.Prepare(`INSERT INTO usuario
+					 (nome, datanasc, cpf, telefone, email, endereco, bairro, cidade, cep, senha)
+					 Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O Json veio com erro: " + err.Error()})
+			return
+		}
+		defer stmt.Close()
+
+		medico = append(medico, m)
+
+		_, err = stmt.Exec(m.Nome, m.Datanasc, m.Cpf, m.Telefone, m.Email, m.Endereco, m.Bairro, m.Cidade, m.Cep, m.Senha)
+
+		if err != nil {
+			c.JSON(400, gin.H{"message": "O Json veio com erro: " + err.Error()})
+			return
+		}
+
+		registros, err := db.Query("SELECT codigo, FROM usuario where cpf = ?", m.Cpf)
+
+		var medid int
+
+		for registros.Next() {
+			var id int
+			err = registros.Scan(&id)
+
+			if err != nil {
+				c.JSON(400, gin.H{"message": "Erro na inserção do usuario: " + err.Error()})
+				return
+			}
+
+			medid = id
+		}
+
+		fmt.Printf("%v", medid)
+
+		// ins, err := db.Prepare(`INSERT INTO medico (usercod, crm, especialidade) Values (?, ?, ?)`)
+
+		// if err != nil {
+		// 	c.JSON(400, gin.H{"message": "O Json veio com erro: " + err.Error()})
+		// 	return
+		// }
+		// defer ins.Close()
+
+		// _, err = ins.Exec(m.Id, m.CRM, m.Especial)
+
+		// fmt.Printf("%v", m)
+		// if err != nil {
+		// 	c.JSON(500, gin.H{"message": err.Error()})
+
+		// 	return
+		// }
+		// defer registros.Close()
+
+		c.JSON(200, gin.H{"message": "Inserção realizada com sucesso"})
 	})
 
 	r.Run(":3001")
