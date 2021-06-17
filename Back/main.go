@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 	"github.com/gin-contrib/cors"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -52,8 +54,28 @@ type Medico struct {
 	Especial string `json:"especial"`
 }
 
+type Login struct {
+	Email    string `json:"emailUser"`
+	Password string `json:"senhaUser"`
+}
+
+func CORS(c *gin.Context) {
+
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "*")
+	c.Header("Access-Control-Allow-Headers", "*")
+	c.Header("Content-Type", "application/json")
+
+	if c.Request.Method != "OPTIONS" {
+		c.Next()
+	} else {
+		c.AbortWithStatus(http.StatusOK)
+	}
+}
+
 func main() {
 	r := gin.Default()
+	r.Use(CORS)
 
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
@@ -191,14 +213,14 @@ func main() {
 		d.JSON(200, gin.H{"message": "Inserção realizada com sucesso"})
 	})
 
-	r.GET("/login", func(c *gin.Context) {
+	r.POST("/login", func(c *gin.Context) {
 		db := conexao.Connect()
 		defer db.Close()
 
-		emailUser := c.Query("emailUser")
-		senhaUser := c.Query("senhaUser")
+		var login Login
 
-		registros, err := db.Query("SELECT email, senha FROM usuario WHERE email ='" + emailUser + "' and senha = '" + senhaUser + "'")
+		err := c.ShouldBind(&login)
+		registros, _ := db.Query("SELECT email, senha FROM usuario WHERE email ='" + login.Email + "' and senha = '" + login.Password + "'")
 		if err != nil {
 			c.JSON(400, gin.H{"message": "Erro"})
 			return
