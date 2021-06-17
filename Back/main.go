@@ -3,7 +3,8 @@ package main
 import (
 	"agendamedica/conexao"
 	"fmt"
-
+	"time"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -54,6 +55,18 @@ type Medico struct {
 func main() {
 	r := gin.Default()
 
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "*"
+		},
+		MaxAge: 12 * time.Hour,
+	}))
+	  
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{"data": "Hello world"})
 	})
