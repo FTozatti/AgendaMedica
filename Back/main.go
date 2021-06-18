@@ -3,9 +3,10 @@ package main
 import (
 	"agendamedica/conexao"
 	"fmt"
-	"time"
-	"github.com/gin-contrib/cors"
 	"net/http"
+	"time"
+
+	"github.com/gin-contrib/cors"
 
 	"github.com/gin-gonic/gin"
 )
@@ -87,7 +88,7 @@ func main() {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
-	  
+
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{"data": "Hello world"})
 	})
