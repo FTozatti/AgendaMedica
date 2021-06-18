@@ -73,7 +73,7 @@ function Home() {
          
                 <li>
                   <div class="container_imagem">
-                    <img src="../images/medico.png" alt="" class="image_" />
+                    <img src="../images/maleta.jpeg" alt="" class="image_" />
                     <div class="information_image">
                     <a href="http://localhost:3000/medico">
                       <button class ="teste"> Cadastrar Médico</button>
