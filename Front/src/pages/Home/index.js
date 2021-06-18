@@ -53,7 +53,9 @@ function Home() {
                   <div class="container_imagem">
                     <img src="../images/exame.png" alt="" class="image_" />
                     <div class="information_image">
-                      <p class="name_image">Exames</p>
+                      <a href="http://localhost:3000/consulta">
+                        <button class ="teste"> Agendar Consulta</button>
+                      </a>
                     </div>
                   </div>
                 </li>
@@ -62,16 +64,20 @@ function Home() {
                   <div class="container_imagem">
                     <img src="../images/prontuario.png" alt="" class="image_" />
                     <div class="information_image">
-                      <p class="name_image">Prontuário</p>
+                    <a href="http://localhost:3000/AlterarUsuario">
+                      <button class ="teste"> Alterar Cadastro</button>
+                      </a>
                     </div>
                   </div>
                 </li>
          
                 <li>
                   <div class="container_imagem">
-                    <img src="../images/odonto.png" alt="" class="image_" />
+                    <img src="../images/medico.png" alt="" class="image_" />
                     <div class="information_image">
-                      <p class="name_image">Odontologia</p>
+                    <a href="http://localhost:3000/medico">
+                      <button class ="teste"> Cadastrar Médico</button>
+                      </a> 
                     </div>
                   </div>
                 </li>
