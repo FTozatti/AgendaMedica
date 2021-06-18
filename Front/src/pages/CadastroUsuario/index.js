@@ -18,24 +18,49 @@ class User extends React.Component {
             senha: ""
         }
     }
-
-    handleChange = event => {
+    handleChangeNome = event => {
         this.setState({ nome: event.target.value });
+    }
+    handleChangeDatanasc = event => {
         this.setState({ datanasc: event.target.value });
+    }
+    handleChangeCpf = event => {
         this.setState({ cpf: event.target.value });
+    }
+    handleChangetelefone = event => {
         this.setState({ telefone: event.target.value });
+    }
+    handleChangeEmail = event => {
         this.setState({ email: event.target.value });
+    }
+    handleChangeEndereco = event => {
         this.setState({ endereco: event.target.value });
+    }
+    handleChangeBairro = event => {
         this.setState({ bairro: event.target.value });
+    }
+    handleChangeCidade = event => {
         this.setState({ cidade: event.target.value });
+    }
+    handleChangeCep = event => {
         this.setState({ cep: event.target.value });
+    }
+    handleChangeSenha = event => {
         this.setState({ senha: event.target.value });
     }
-
-     handleSubmit = event => {
+    
+    handleSubmit = event => {
         event.preventDefault();
         
-        var usuario = {
+        var axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
+                "Access-Control-Allow-Origin": "*",
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+                "Access-Control-Allow-Headers": "*"
+            }
+        };
+        axios.post('http://localhost:3001/usuarios',{
             nome: this.state.nome,
             datanasc: this.state.datanasc,
             cpf: this.state.cpf,
@@ -45,42 +70,30 @@ class User extends React.Component {
             bairro: this.state.bairro,
             cidade: this.state.cidade,
             cep: this.state.cep,
-            senha: this.state.senha,
-        };
+            senha: this.state.senha
+        }
+        , axiosConfig) 
+        .then(response => {
+            console.log(response.data)
+            alert("Cadastrado com sucesso")
 
-        axios.post('http://localhost:3001/usuarios', { usuario })            
-          .then(response => {
-                this.setState({
-                  nome: response.usuario.nome,
-                  datanasc: response.usuario.datanasc,
-                  cpf: response.usuario.cpf,
-                  telefone: response.usuario.telefone,
-                  email: response.usuario.email,
-                  endereco: response.usuario.endereco,
-                  bairro: response.usuario.bairro,
-                  cidade: response.usuario.cidade,
-                  cep: response.usuario.cep,
-                  senha: response.usuario.senha,
-                });
-                console.log(response.usuario);
-                console.log("entrou");
-              })
-              .catch(e => {
-                console.log(e);
-                console.log("deu ruim");
-              });
+        })
+        .catch(e => {
+            console.log(e)
+            alert("Algo deu errado. Tente novamente!")                
+        });   
     }
     render() {
         return (
             <div>
             <nav id="Navegacao">
-                <div class="area">
+                <div className="area">
                 <a href="/Home">
-                    <h1 class="logo2"><img src="../images/logosaude2.png" width="45" height="45" /></h1>
-                    <h3 class="logo"><span class="preto">Agenda Médica</span></h3>
+                    <h1 className="logo2"><img src="../images/logosaude2.png" width="45" height="45" /></h1>
+                    <h3 className="logo"><span className="preto">Agenda Médica</span></h3>
                 </a>
-                <div class="menuu">
-                    <a class="iazul" href="/Home"><i class="fas fa-home"></i> Pagina Inicial</a>
+                <div className="menuu">
+                    <a className="iazul" href="/Home"><i className="fas fa-home"></i> Pagina Inicial</a>
                 </div>
                 </div>
             </nav>
@@ -89,48 +102,68 @@ class User extends React.Component {
             
     
             <div style={{ padding: "26px" }}>
-                <form onSubmit={this.handleSubmit}>
-                    <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="inputEmail4">Nome Completo</label>
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="Nome Completo" onChange={this.handleChange}/>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputPassword4">CPF</label>
-                        <input type="password" class="form-control" id="inputPassword4" placeholder="CPF" onChange={this.handleChange}/>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputAddress">Telefone</label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="Telefone" onChange={this.handleChange}/>
-                    </div>
+                <form>
+                    <div className="form-row">
+                        <div className="form-group col-md-3">
+                            <label htmlFor="inputNome">Nome Completo</label>
+                            <input type="text" className="form-control" id="inputNome" placeholder="Nome Completo" onChange={this.handleChangeNome}/>
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="inputDatanasc">Data de Nascimento</label>
+                            <input type="text" className="form-control" id="inputDatanasc" placeholder="Data de nascimento" onChange={this.handleChangeDatanasc}/>
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="inputCPF">CPF</label>
+                            <input type="text" className="form-control" id="inputCPF" placeholder="CPF" onChange={this.handleChangeCpf}/>
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="inputTelefone">Telefone</label>
+                            <input type="text" className="form-control" id="inputTelefone" placeholder="Telefone" onChange={this.handleChangetelefone}/>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                    <label for="inputAddress2">Endereço</label>
-                    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartamento, hotel, casa, etc." onChange={this.handleChange}/>
+                    <div className="form-group">
+                        <label htmlFor="inputEmail">Email</label>
+                        <input type="email" className="form-control" id="inputEmail" placeholder="Email" onChange={this.handleChangeEmail}/>
                     </div>
-                    <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputCity">Cidade</label>
-                        <input type="text" class="form-control" id="inputCity" placeholder="..." onChange={this.handleChange}/>
+
+                    <div className="form-group">
+                        <label htmlFor="inputAddress">Endereço</label>
+                        <input type="text" className="form-control" id="inputAddress" placeholder="Apartamento, hotel, casa, etc." onChange={this.handleChangeEndereco}/>
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputEstado">Estado</label>
-                        <select id="inputEstado" class="form-control" onChange={this.handleChange}>
-                        <option selected>Escolher...</option>
-                        <option>...</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="inputCEP">CEP</label>
-                        <input type="text" class="form-control" id="inputCEP" placeholder="..." onChange={this.handleChange}/>
-                    </div>
+
+                    <div className="form-row">
+                        <div className="form-group col-md-3">
+                            <label htmlFor="inputAddress2">Bairro</label>
+                            <input type="text" className="form-control" id="inputAddress2" placeholder="Bairro" onChange={this.handleChangeBairro}/>
+                        </div>
+                    
+                        <div className="form-group col-md-3">
+                            <label htmlFor="inputCity">Cidade</label>
+                            <input type="text" className="form-control" id="inputCity" placeholder="..." onChange={this.handleChangeCidade}/>
+                        </div>
+                        {/* <div className="form-group col-md-4">
+                            <label htmlFor="inputEstado">Estado</label>
+                            <select id="inputEstado" className="form-control" onChange={this.handleChange}>
+                            <option selected>Escolher...</option>
+                            <option>...</option>
+                            </select>
+                        </div> */}
+                        <div className="form-group col-md-3">
+                            <label htmlFor="inputCEP">CEP</label>
+                            <input type="text" className="form-control" id="inputCEP" placeholder="..." onChange={this.handleChangeCep}/>
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label htmlFor="inputSenha">Senha</label>
+                            <input type="password" className="form-control" id="inputSenha" placeholder="Senha" onChange={this.handleChangeSenha}/>
+                        </div>
+                        
                     </div>
                     <br/>
                     <br/>
     
                     <div style={{textAlign: "center"}}>
-                        <button type="submit"  class="btn btn-secondary">Confirmar</button>
+                        <button type="submit"  className="btn btn-secondary" onClick={this.handleSubmit}>Confirmar</button>
                     </div>
     
                 </form>
@@ -140,3 +173,4 @@ class User extends React.Component {
     }
 }
 export default User
+

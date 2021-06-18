@@ -19,10 +19,9 @@ function Login() {
       setShow(!show);
    }
    
-
    function goHome(){
       console.log("Entrou")
-      axios.get(`http://localhost:3001/login?emailUser=${email}&senhaUser=${password}`)
+      axios.post(`http://localhost:3001/login`, {emailUser: email, senhaUser: password})
       .then(res => {
          if (res.data != null){
             history.push('Home')
