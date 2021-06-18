@@ -21,8 +21,8 @@ function AlterarUsuario() {
             <form>
                 <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label for="inputEmail4">Nome Completo</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="Nome Completo"/>
+                    <label for="inputName">Nome Completo</label>
+                    <input type="name" class="form-control" id="inputName" placeholder="Nome Completo"/>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputPassword4">CPF</label>
