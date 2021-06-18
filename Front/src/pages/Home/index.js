@@ -73,7 +73,7 @@ function Home() {
          
                 <li>
                   <div class="container_imagem">
-                    <img src="../images/maleta.jpeg" alt="" class="image_" />
+                    <img src="../images/maletateste.png" alt="" class="image_" />
                     <div class="information_image">
                     <a href="http://localhost:3000/medico">
                       <button class ="teste"> Cadastrar Médico</button>
@@ -81,16 +81,7 @@ function Home() {
                     </div>
                   </div>
                 </li>
-         
-                <li>
-                  <div class="container_imagem">
-                    <img src="../images/whats.png" alt="" class="image_" />
-                    <div class="information_image">
-                      <p class="name_image">Dúvidas? Entre em contato pelo WhatsApp</p>
-                    </div>
-                  </div>
-                </li>
-         
+          
               </ul>
             </div>
             <footer style={{ backgroundColor: '#90c7ec', color: '#080808', padding: '10px', marginTop: '15px' }} >
