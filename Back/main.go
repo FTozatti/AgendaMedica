@@ -39,7 +39,6 @@ type Consulta struct {
 }
 
 type Medico struct {
-	Id       int    `json:"id"`
 	Nome     string `json:"nome"`
 	Datanasc string `json:"datanasc"`
 	Cpf      string `json:"cpf"`
@@ -294,9 +293,7 @@ func main() {
 			return
 		}
 
-		stmt, err := db.Prepare(`INSERT INTO usuario
-					 (nome, datanasc, cpf, telefone, email, endereco, bairro, cidade, cep, senha)
-					 Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+		stmt, err := db.Prepare(`CALL insere_medico (?,?,?,?,?,?,?,?,?,?,?,?,@id)`)
 
 		if err != nil {
 			c.JSON(400, gin.H{"message": "O Json veio com erro: " + err.Error()})
@@ -306,48 +303,12 @@ func main() {
 
 		medico = append(medico, m)
 
-		_, err = stmt.Exec(m.Nome, m.Datanasc, m.Cpf, m.Telefone, m.Email, m.Endereco, m.Bairro, m.Cidade, m.Cep, m.Senha)
+		_, err = stmt.Exec(m.Nome, m.Datanasc, m.Cpf, m.Telefone, m.Email, m.Endereco, m.Bairro, m.Cidade, m.Cep, m.Senha, m.CRM, m.Especial)
 
 		if err != nil {
 			c.JSON(400, gin.H{"message": "O Json veio com erro: " + err.Error()})
 			return
 		}
-
-		registros, err := db.Query("SELECT codigo, FROM usuario where cpf = ?", m.Cpf)
-
-		var medid int
-
-		for registros.Next() {
-			var id int
-			err = registros.Scan(&id)
-
-			if err != nil {
-				c.JSON(400, gin.H{"message": "Erro na inserção do usuario: " + err.Error()})
-				return
-			}
-
-			medid = id
-		}
-
-		fmt.Printf("%v", medid)
-
-		// ins, err := db.Prepare(`INSERT INTO medico (usercod, crm, especialidade) Values (?, ?, ?)`)
-
-		// if err != nil {
-		// 	c.JSON(400, gin.H{"message": "O Json veio com erro: " + err.Error()})
-		// 	return
-		// }
-		// defer ins.Close()
-
-		// _, err = ins.Exec(m.Id, m.CRM, m.Especial)
-
-		// fmt.Printf("%v", m)
-		// if err != nil {
-		// 	c.JSON(500, gin.H{"message": err.Error()})
-
-		// 	return
-		// }
-		// defer registros.Close()
 
 		c.JSON(200, gin.H{"message": "Inserção realizada com sucesso"})
 	})
