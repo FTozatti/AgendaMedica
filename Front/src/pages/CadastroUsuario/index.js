@@ -88,12 +88,12 @@ class User extends React.Component {
             <div>
             <nav id="Navegacao">
                 <div className="area">
-                <a href="/Home">
+                <a href="/">
                     <h1 className="logo2"><img src="../images/logosaude2.png" width="45" height="45" /></h1>
                     <h3 className="logo"><span className="preto">Agenda Médica</span></h3>
                 </a>
                 <div className="menuu">
-                    <a className="iazul" href="/Home"><i className="fas fa-home"></i> Pagina Inicial</a>
+                    <a className="iazul" href="/"><i className="fas fa-home"></i> Pagina Inicial</a>
                 </div>
                 </div>
             </nav>

@@ -6,7 +6,7 @@ function ListagemConsulta() {
       <div>
          <nav id="Navegacao">
                <div class="area">
-               <a href="/Home">
+               <a href="/">
                   <h1 class="logo2"><img src="../images/logosaude2.png" width="45" height="45" /></h1>
                   <h3 class="logo"><span class="preto">Agenda Médica</span></h3>
                </a>
